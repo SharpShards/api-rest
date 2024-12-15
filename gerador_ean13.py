@@ -3,14 +3,14 @@ import math as m
 
 
 # Main
+## 12 primeiros dígitos do código. 
 cod = 153057800009
 
 print("Código = ", cod)
 print(" ")
 
-
-# - Multiplica os dígitos do código por 1 e por 3, alternando entre 1 e 3.
-
+## Cálculo do Verificador
+### Multiplica os dígitos do código por 1 e por 3, alternando entre 1 e 3.
 control = 1
 sum = 0
 ver = 0
@@ -26,42 +26,37 @@ for loop in str(cod):
 ver = sum 
 
 
-# - Divide a soma por 10.
-
+### Divide a soma por 10.
 ver = ver / 10
 
 
-# - Arredondando o resultado para baixo.
-
+### Arredondando o resultado para baixo.
 ver = m.floor(ver)
 
 
-# - Some 1 ao resultado da divisão.
-
+### Some 1 ao resultado da divisão.
 ver += 1
 
 
-# - Multiplique o resultado dessa soma por 10.
-
+### Multiplique o resultado dessa soma por 10.
 ver = ver * 10
 
 
-# - Subtraia desse resultado o valor da soma inicial das multiplicações.
-
+### Subtraia desse resultado o valor da soma inicial das multiplicações.
 ver = ver - sum
 
-# Verificador
 
+### Determina o verificador
 print("Verificador =", ver)
 print(" ")
 
-# - O resultado da subtração é o dígito verificador.
-# - Se o resultado for um múltiplo de 10 → O dígito verificador será 0.
-
+#### O resultado da subtração é o dígito verificador.
+#### Se o resultado for um múltiplo de 10 → O dígito verificador será 0.
 if(ver > 9):
     ver = 0
 
-# Junta tudo
+
+## Junta tudo
 ean = str(cod) + str(ver)
 
 print("EAN = ", ean)
