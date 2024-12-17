@@ -55,3 +55,22 @@ try:
 
 except requests.exceptions.RequestException as e:
     print(e)
+
+
+## Tiago: Quero alterar o nome da Sprite, que está com erro ortográfico, e alterar o estoque da garrafa de 500ml zero.
+url = "http://127.0.0.1:5000/produtos/:id"
+
+dados = {"id" : 9,
+         "nome_externo" : "Sprite",
+         
+         "sku" : {"cod" : 1530578000113,
+                  "estoque" : 51}
+         }
+
+try:
+    result = requests.patch(url, json = dados)
+    
+    print(result.json()["mensagem"])
+    
+except requests.exceptions.RequestException as e:
+     print(e)

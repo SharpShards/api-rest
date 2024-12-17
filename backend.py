@@ -100,6 +100,34 @@ def retornarProduto():
     except Error:
         return jsonify({"mensagem": "Não foi possível carregar o produto!"}), 500
 
+## Atualizar produto e SKU
+@app.route("/produtos/:id", methods = ["PATCH"])
+def atualizarProduto():
+    dados = request.json
+    
+    try:
+        cursor = conex.cursor()
+        
+        ### Atualizando produto
+        for chave, valor in dados.items():
+            if(chave == "id" or chave == "sku"):
+                continue
+            else:
+                cursor.execute(f'update produto set {chave} = "{valor}" where id = {dados["id"]}')
+        
+        ### Atualizando SKU, se aplicável
+        if("sku" in dados.keys()):
+            for c, v in dados["sku"].items():
+                if(c == "cod"):
+                    continue
+                
+                cursor.execute(f'update sku set {c} = {v} where cod = {valor["cod"]}')
+                
+        ### Retorno
+        return jsonify({"mensagem": "Produto atualizado!"}), 200
+    except Error:
+        return jsonify({"mensagem": "Não foi possível atualizar o produto!"}), 500
+
 
 # Main
 if(__name__ == '__main__'):
