@@ -30,3 +30,28 @@ try:
 
 except requests.exceptions.RequestException as e:
     print(e)
+    
+
+## Tiago: Quero visualizar todos os produtos que possuo cadastrado.
+url = "http://127.0.0.1:5000/produtos"
+
+try:
+    result = requests.get(url)
+    
+    print(result.json()["mensagem"])
+
+except requests.exceptions.RequestException as e:
+    print(e)
+
+
+## Tiago: Quero visualizar as informações da Sprite.
+url = "http://127.0.0.1:5000/produtos/:id"
+id = 9
+
+try:
+    result = requests.get(url, json = id)
+    
+    print(result.json()["mensagem"])
+
+except requests.exceptions.RequestException as e:
+    print(e)
