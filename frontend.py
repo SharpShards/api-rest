@@ -57,7 +57,7 @@ except requests.exceptions.RequestException as e:
     print(e)
 
 
-## Tiago: Quero alterar o nome da Sprite, que está com erro ortográfico, e alterar o estoque da garrafa de 500ml zero.
+# ## Tiago: Quero alterar o nome da Sprite, que está com erro ortográfico, e alterar o estoque da garrafa de 500ml zero.
 url = "http://127.0.0.1:5000/produtos/:id"
 
 dados = {"id" : 9,
@@ -72,5 +72,18 @@ try:
     
     print(result.json()["mensagem"])
     
+except requests.exceptions.RequestException as e:
+     print(e)
+
+
+## Tiago: Quero deletar um produto que não irei mais vender.
+url = "http://127.0.0.1:5000/produtos/:id"
+id = 9
+
+try:
+    result = requests.delete(url, json = id)
+
+    print(result.json()["mensagem"])
+
 except requests.exceptions.RequestException as e:
      print(e)

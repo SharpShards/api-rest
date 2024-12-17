@@ -128,7 +128,24 @@ def atualizarProduto():
     except Error:
         return jsonify({"mensagem": "Não foi possível atualizar o produto!"}), 500
 
+## Deletar produto e SKU
+@app.route("/produtos/:id", methods = ["DELETE"])
+def deletarProduto():
+    try:
+        id = request.json
+        
+        ### Deletando o produto e seus SKUs
+        cursor = conex.cursor()
+        
+        cursor.execute(f'delete from produto where id = {id}')
 
+        ### Retorno
+        return jsonify({"mensagem": "Produto deletado!"}), 200
+    
+    except Error:
+        return jsonify({"mensagem": "Não foi possível deletar o produto!"}), 500
+    
+    
 # Main
 if(__name__ == '__main__'):
     app.run()
