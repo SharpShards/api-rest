@@ -46,9 +46,8 @@ def criarProduto():
                 est = loop.get("estoque")
                 tab = loop.get("preco_tab")
                 lis = loop.get("preco_lis")
-                prod = loop.get("id_produto")
                 
-                cursor.execute(f'insert into sku values(0, "{cod}", "{nome}", "{est}", "{tab}", "{lis}", "{prod}");')
+                cursor.execute(f'insert into sku values(0, "{cod}", "{nome}", "{est}", "{tab}", "{lis}", (select id from produto order by id desc limit 1));')
             
             conex.commit()
         

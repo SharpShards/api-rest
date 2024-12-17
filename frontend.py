@@ -14,12 +14,12 @@ dados = {"nome_interno" : "sprite",
          "ativo" : "1",
          
          "sku": [
-                {"cod": "1530578000040", "nome": "SP-2ML-NOR", "estoque": 115, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
-                {"cod": "1530578000052", "nome": "SP-5ML-NOR", "estoque": 75, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
-                {"cod": "1530578000069", "nome": "SP-10ML-NOR", "estoque": 20, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
-                {"cod": "1530578000106", "nome": "SP-2ML-ZER", "estoque": 92, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
-                {"cod": "1530578000113", "nome": "SP-5ML-ZER", "estoque": 51, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
-                {"cod": "1530578000120", "nome": "SP-10ML-ZER", "estoque": 7, "preco_tab": 4.50, "preco_lis": 2.80, "id_produto": 9},
+                {"cod": "1530578000040", "nome": "SP-2ML-NOR", "estoque": 115, "preco_tab": 4.50, "preco_lis": 2.80},
+                {"cod": "1530578000052", "nome": "SP-5ML-NOR", "estoque": 75, "preco_tab": 4.50, "preco_lis": 2.80},
+                {"cod": "1530578000069", "nome": "SP-10ML-NOR", "estoque": 20, "preco_tab": 4.50, "preco_lis": 2.80},
+                {"cod": "1530578000106", "nome": "SP-2ML-ZER", "estoque": 92, "preco_tab": 4.50, "preco_lis": 2.80},
+                {"cod": "1530578000113", "nome": "SP-5ML-ZER", "estoque": 51, "preco_tab": 4.50, "preco_lis": 2.80},
+                {"cod": "1530578000120", "nome": "SP-10ML-ZER", "estoque": 7, "preco_tab": 4.50, "preco_lis": 2.80},
             ]
          }
 
