@@ -2,7 +2,6 @@
 import mysql.connector as mysql
 from mysql.connector import Error
 from flask import Flask, request, jsonify
-from tabulate import tabulate
 
 
 # Confifuração
@@ -17,6 +16,27 @@ conex = mysql.connect(**cred)
 
 
 # Funções
+## Retornar produtos e SKUs
+@app.route("/produtos", methods = ["GET"])
+def retornarProdutos():
+    try:
+        ### Consulta
+        cursor = conex.cursor()
+        
+        cursor.execute("select nome_externo as Nome, nome as Caracteristicas, estoque as Disponibilidade, preco_tab as Preço, preco_lis as Preço_com_Desconto from produto join sku on produto.id = sku.id_produto;")
+        
+        prods = cursor.fetchall()
+        
+        headers = [desc[0] for desc in cursor.description]
+
+        ### Retorno
+        return jsonify({"mensagem": "Lista de produtos:",
+                        "headers": headers,
+                        "dados": prods}), 200
+    except Error:
+        return jsonify({"mensagem": "Não foi possível gerar uma lista de produtos!"}), 500
+    
+    
 ## Cadastrar produto
 @app.route("/produtos", methods = ["POST"])
 def criarProduto():
@@ -51,53 +71,32 @@ def criarProduto():
             
             conex.commit()
         
+        ### Retorno
         return jsonify({"mensagem": "Produto cadastrado com sucesso!"}), 200
     except Error as e:
         return jsonify({"mensagem": "Falha ao cadastrar produto!"}), 500
 
-## Retornar produtos e SKUs
-@app.route("/produtos", methods = ["GET"])
-def retornarProdutos():
-    try:
-        ### Consulta
-        cursor = conex.cursor()
-        
-        cursor.execute("select nome_externo as Nome, nome as Caracteristicas, estoque as Disponibilidade, preco_tab as Preço, preco_lis as Preço_com_Desconto from produto join sku on produto.id = sku.id_produto;")
-        
-        prods = cursor.fetchall()
-        
-        ### Exibição    
-        headers = [desc[0] for desc in cursor.description]
-        
-        print(tabulate(prods, headers=headers, tablefmt="grid"))
-
-        ### Retorno
-        return jsonify({"mensagem": "Lista de produtos gerada!"}), 200
-    except Error:
-        return jsonify({"mensagem": "Não foi possível gerar uma lista de produtos!"}), 500
 
 ## Retornar um produto específico
 @app.route("/produtos/:id", methods = ["GET"])
-def retornarProduto():  
-    id = request.json
-    
+def retornarProduto():   
     try:
         ### Consulta
         cursor = conex.cursor()
         
-        cursor.execute(f'select nome_externo as Nome, nome as Caracteristicas, estoque as Disponibilidade, preco_tab as Preço, preco_lis as Preço_com_Desconto from produto join sku on produto.id = sku.id_produto where produto.id = {id}')
+        cursor.execute(f'select nome_externo as Nome, nome as Caracteristicas, estoque as Disponibilidade, preco_tab as Preço, preco_lis as Preço_com_Desconto from produto join sku on produto.id = sku.id_produto where produto.id = (select id from produto order by id desc limit 1)')
     
         prod = cursor.fetchall()
         
-        ### Exibição    
         headers = [desc[0] for desc in cursor.description]
-        
-        print(tabulate(prod, headers=headers, tablefmt="grid"))
-        
+
         ### Retorno
-        return jsonify({"mensagem": "Produto carregado!"}), 200
+        return jsonify({"mensagem": "Produto:",
+                        "headers": headers,
+                        "dados": prod}), 200
     except Error:
         return jsonify({"mensagem": "Não foi possível carregar o produto!"}), 500
+
 
 ## Atualizar produto e SKU
 @app.route("/produtos/:id", methods = ["PATCH"])
@@ -109,10 +108,10 @@ def atualizarProduto():
         
         ### Atualizando produto
         for chave, valor in dados.items():
-            if(chave == "id" or chave == "sku"):
+            if(chave == "sku"):
                 continue
             else:
-                cursor.execute(f'update produto set {chave} = "{valor}" where id = {dados["id"]}')
+                cursor.execute(f'update produto set {chave} = "{valor}" where id = (select id from (select id from produto order by id desc limit 1) as subquery)')
         
         ### Atualizando SKU, se aplicável
         if("sku" in dados.keys()):
@@ -127,16 +126,21 @@ def atualizarProduto():
     except Error:
         return jsonify({"mensagem": "Não foi possível atualizar o produto!"}), 500
 
+
 ## Deletar produto e SKU
 @app.route("/produtos/:id", methods = ["DELETE"])
 def deletarProduto():
     try:
-        id = request.json
-        
         ### Deletando o produto e seus SKUs
         cursor = conex.cursor()
         
-        cursor.execute(f'delete from produto where id = {id}')
+        cursor.execute(f'delete from sku where id_produto = (select id from produto order by id desc limit 1)')
+        
+        conex.commit()
+        
+        cursor.execute(f'delete from produto where id = (select id from (select id from produto order by id desc limit 1) as subquery)')
+        
+        conex.commit()
 
         ### Retorno
         return jsonify({"mensagem": "Produto deletado!"}), 200
