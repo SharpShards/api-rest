@@ -21,9 +21,9 @@ Para o desenvolvimento e manipulação desse projeto, foram utilizadas as seguin
 - `README.md`: Documentação da API
 
 ## Simulação
-- Em um terminal, execute o script backend.py para iniciar o servidor Flask.
-- Em outro terminal, execute o script frontend.py para iniciar a simulação.
-- Observe as respostas retornadas no terminal frontend.py.
+- Em um terminal, execute o script `backend.py` para iniciar o servidor Flask.
+- Em outro terminal, execute o script `frontend.py` para iniciar a simulação.
+- Observe as respostas retornadas no terminal `frontend.py`.
 
 ## Dependências
  Utilize o comando abaixo para instalar as dependências:
